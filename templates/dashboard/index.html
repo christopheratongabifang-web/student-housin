@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex-grow flex flex-col md:flex-row bg-gray-50 min-h-screen">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-64 bg-white shadow-lg border-r border-gray-100 flex-shrink-0 z-10">
+        <div class="p-6 border-b border-gray-100">
+            <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Admin<span class="text-indigo-600">Dash</span></h2>
+            <p class="text-sm text-gray-500 mt-1">Property Management</p>
+        </div>
+        <nav class="p-4 space-y-2">
+            <a href="#" class="flex items-center space-x-3 px-4 py-3 bg-indigo-50 text-indigo-700 rounded-xl font-medium transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                <span>Overview</span>
+            </a>
+            <a href="#properties" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span>My Properties</span>
+            </a>
+            <a href="#inquiries" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                <span>Inquiries</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Welcome back, {{ request.user.username }}!</h1>
+                <p class="text-gray-500 mt-2">Here is what's happening with your properties today.</p>
+            </div>
+            <div>
+                <a href="{% url 'property_create' %}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-md hover:shadow-lg transform transition-all hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    List New Property
+                </a>
+            </div>
+        </div>
+
+        {% if messages %}
+            <div class="mb-8 space-y-2">
+            {% for message in messages %}
+                <div class="p-4 rounded-xl shadow-sm text-sm {% if message.tags == 'error' %}bg-red-50 text-red-700 border-l-4 border-red-500{% else %}bg-green-50 text-green-700 border-l-4 border-green-500{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Premium Stat Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <!-- Stat 1 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 transform transition-all hover:-translate-y-1 hover:shadow-md relative overflow-hidden group">
+                <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 opacity-50 transition-transform group-hover:scale-150"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Properties</p>
+                        <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-4xl font-extrabold text-gray-900">{{ total_properties }}</p>
+                </div>
+            </div>
+
+            <!-- Stat 2 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 transform transition-all hover:-translate-y-1 hover:shadow-md relative overflow-hidden group">
+                <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 opacity-50 transition-transform group-hover:scale-150"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Reviews</p>
+                        <div class="p-2 bg-blue-50 rounded-lg text-blue-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-4xl font-extrabold text-gray-900">{{ total_reviews }}</p>
+                </div>
+            </div>
+
+            <!-- Stat 3 -->
+            <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-lg border border-gray-700 p-6 transform transition-all hover:-translate-y-1 relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white opacity-5"></div>
+                <div class="relative z-10 flex flex-col h-full justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-400 uppercase tracking-wider">Unread Inquiries</p>
+                        <p class="mt-4 text-4xl font-extrabold text-white">{{ inquiries.count }}</p>
+                    </div>
+                    <a href="#inquiries" class="mt-4 text-sm font-medium text-indigo-400 hover:text-indigo-300 flex items-center">
+                        View Inbox <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Property Management Grid -->
+        <div id="properties" class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 tracking-tight">Manage Properties</h3>
+                <span class="bg-gray-200 text-gray-700 py-1 px-3 rounded-full text-xs font-bold">{{ properties.count }} Total</span>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for property in properties %}
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <!-- Image Placeholder / Header -->
+                    <div class="h-48 bg-gray-100 relative overflow-hidden flex-shrink-0">
+                        <!-- Abstract Background Pattern -->
+                        <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiM0ZjQ2ZTUiLz48L3N2Zz4=')]"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <svg class="h-16 w-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        </div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-gray-900 shadow-sm">
+                            FRS {{ property.price_per_month }}/mo
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="p-5 flex-1 flex flex-col">
+                        <h4 class="text-xl font-bold text-gray-900 mb-2 truncate">
+                            <a href="{% url 'property_detail' property.id %}" class="hover:text-indigo-600 transition-colors">{{ property.title }}</a>
+                        </h4>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-2 flex-1">{{ property.description }}</p>
+                        
+                        <div class="flex items-center text-xs text-gray-400 mb-6 font-medium">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            Lat: {{ property.latitude|floatformat:3 }}, Lng: {{ property.longitude|floatformat:3 }}
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                            <a href="{% url 'property_edit' property.id %}" class="flex-1 flex justify-center items-center py-2 px-4 bg-gray-50 text-gray-700 font-medium rounded-lg hover:bg-indigo-50 hover:text-indigo-700 transition-colors mr-2">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                Edit
+                            </a>
+                            <form action="{% url 'property_delete' property.id %}" method="POST" onsubmit="return confirm('Are you sure you want to delete this property?');" class="flex-1">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full flex justify-center items-center py-2 px-4 bg-red-50 text-red-600 font-medium rounded-lg hover:bg-red-100 hover:text-red-700 transition-colors">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
+                    <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No properties listed</h3>
+                    <p class="text-gray-500 mb-6">Get started by listing your first student house.</p>
+                    <a href="{% url 'property_create' %}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700">
+                        List New Property
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Inquiries Inbox -->
+        <div id="inquiries" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                <div class="flex items-center">
+                    <div class="p-2 bg-purple-100 rounded-lg text-purple-600 mr-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 tracking-tight">Inquiries Inbox</h3>
+                </div>
+            </div>
+            
+            <div class="divide-y divide-gray-100">
+                {% for inquiry in inquiries %}
+                <div class="p-6 hover:bg-gray-50 transition-colors flex flex-col md:flex-row gap-6">
+                    <!-- Student Avatar -->
+                    <div class="hidden md:flex flex-shrink-0 h-12 w-12 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 items-center justify-center text-indigo-700 font-bold text-lg shadow-inner">
+                        {{ inquiry.student.username|make_list|first|upper }}
+                    </div>
+                    
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-1">
+                            <h4 class="text-lg font-bold text-gray-900">{{ inquiry.student.username }}</h4>
+                            <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-1 rounded-full">{{ inquiry.created_at|date:"M d, Y g:i A" }}</span>
+                        </div>
+                        
+                        <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 mb-3 border border-indigo-100">
+                            Property: <a href="{% url 'property_detail' inquiry.property.id %}" class="ml-1 hover:underline">{{ inquiry.property.title }}</a>
+                        </div>
+                        
+                        <p class="text-gray-700 bg-white p-4 rounded-xl border border-gray-100 shadow-sm relative">
+                            <!-- Tooltip tail -->
+                            <span class="absolute -top-2 left-6 border-8 border-transparent border-b-gray-100 border-t-0"></span>
+                            <span class="absolute -top-[7px] left-6 border-8 border-transparent border-b-white border-t-0"></span>
+                            {% if inquiry.messages.last %}
+                                {{ inquiry.messages.last.content|truncatechars:100 }}
+                            {% else %}
+                                <i>No messages yet</i>
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <div class="flex-shrink-0 md:self-center">
+                        <a href="{% url 'chat' inquiry.id %}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full justify-center transform transition-transform hover:scale-105">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                            Open Chat
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="p-12 text-center flex flex-col items-center justify-center">
+                    <div class="h-20 w-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                        <svg class="h-10 w-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-1">Inbox is empty</h3>
+                    <p class="text-gray-500">You haven't received any inquiries from students yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </main>
+</div>
+{% endblock %}

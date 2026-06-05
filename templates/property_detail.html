@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+        <!-- Header -->
+        <div class="p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div>
+                <h1 class="text-3xl font-extrabold text-gray-900">{{ property.title }}</h1>
+                <div class="mt-2 flex items-center text-sm text-gray-500">
+                    <svg class="h-4 w-4 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    {% if property.distance_to_campus %}
+                        {{ property.distance_to_campus }} km to campus
+                    {% else %}
+                        Location not specified
+                    {% endif %}
+                </div>
+            </div>
+                <div class="mt-4 md:mt-0 bg-indigo-50 p-4 rounded-lg text-center min-w-[150px]">
+                <div class="text-sm text-indigo-600 font-semibold uppercase tracking-wider">Rent per month</div>
+                <div class="text-3xl font-bold text-indigo-900">FRS {{ property.price_per_month }}</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 p-6 md:p-8">
+            <!-- Main Details -->
+            <div class="md:col-span-2 space-y-8">
+                <!-- Image Placeholder -->
+                <div class="bg-gray-200 rounded-lg h-64 md:h-96 flex items-center justify-center relative overflow-hidden">
+                    <div class="text-gray-400 flex flex-col items-center">
+                        <svg class="h-16 w-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span>No images available yet</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900 mb-4">Description</h2>
+                    <div class="prose max-w-none text-gray-600">
+                        {{ property.description|linebreaks }}
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900 mb-4">Amenities</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {% for amenity in property.amenities %}
+                        <div class="flex items-center text-gray-600">
+                            <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            {{ amenity }}
+                        </div>
+                        {% empty %}
+                        <div class="text-gray-500">No amenities listed.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Admin Info -->
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Landlord Info</h3>
+                    <div class="flex items-center mb-4">
+                        <div class="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xl">
+                            {{ property.landlord.username|make_list|first|upper }}
+                        </div>
+                        <div class="ml-4">
+                            <div class="font-medium text-gray-900">{{ property.landlord.username }}</div>
+                            <div class="text-sm text-gray-500">Property Owner</div>
+                        </div>
+                    </div>
+                <!-- Contact Landlord Form -->
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 mt-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Send Inquiry</h3>
+                    {% if user.is_authenticated and user.role == 'STUDENT' %}
+                    <form action="{% url 'submit_inquiry' property.id %}" method="POST" class="space-y-4">
+                        {% csrf_token %}
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                            <textarea id="message" name="message" rows="4" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Hi {{ property.landlord.username }}, I am interested in this property..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-indigo-600 text-white font-medium py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors">
+                            Send Message
+                        </button>
+                    </form>
+                    {% elif user.is_authenticated %}
+                    <p class="text-sm text-gray-500">Only students can send inquiries.</p>
+                    {% else %}
+                    <p class="text-sm text-gray-500 mb-4">Please log in as a student to contact the admin.</p>
+                    <a href="{% url 'two_factor:login' %}?next={{ request.path }}" class="block w-full text-center bg-indigo-600 text-white font-medium py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors">Log In to Contact</a>
+                    {% endif %}
+                </div>
+
+                <!-- Reviews Summary -->
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Student Reviews</h3>
+                    {% if property.reviews.all %}
+                        <div class="space-y-4">
+                        {% for review in property.reviews.all %}
+                            <div class="border-b border-gray-200 pb-4 last:border-0 last:pb-0">
+                                <div class="flex items-center mb-1">
+                                    <div class="text-yellow-400 flex">
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= review.rating %}
+                                                <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                            {% else %}
+                                                <svg class="h-4 w-4 text-gray-300 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <span class="ml-2 text-xs text-gray-500">{{ review.student.username }}</span>
+                                </div>
+                                <p class="text-sm text-gray-600">{{ review.comment }}</p>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-sm text-gray-500">No reviews yet. Be the first to review!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

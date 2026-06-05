@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-1 flex-col md:flex-row h-[calc(100vh-4rem)]">
+    <!-- Sidebar / Property List -->
+    <div class="w-full md:w-1/2 lg:w-2/5 overflow-y-auto bg-gray-50 border-r border-gray-200">
+        <!-- Search Filters -->
+        <div class="p-4 bg-white border-b sticky top-0 z-10 shadow-sm">
+            <h2 class="text-xl font-semibold mb-3">Search Results</h2>
+            <form method="GET" class="flex gap-2">
+                <input type="text" name="q" value="{{ query|default:'' }}" placeholder="University or location..." class="flex-1 px-3 py-2 border rounded-md text-sm">
+                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm hover:bg-indigo-700">Filter</button>
+            </form>
+            <div class="mt-2 text-sm text-gray-500">Showing {{ properties|length }} properties</div>
+        </div>
+
+        <!-- Property Cards -->
+        <div class="p-4 space-y-4">
+            {% for property in properties %}
+            <div class="bg-white rounded-lg shadow hover:shadow-md transition-shadow duration-200 cursor-pointer overflow-hidden border border-gray-100 property-card" data-lat="{{ property.latitude }}" data-lng="{{ property.longitude }}" data-id="{{ property.id }}">
+                <div class="p-4 flex">
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-lg font-bold text-gray-900"><a href="{% url 'property_detail' property.id %}" class="hover:text-indigo-600">{{ property.title }}</a></h3>
+                            <span class="text-lg font-bold text-indigo-600">FRS {{ property.price_per_month }}<span class="text-xs text-gray-500 font-normal">/mo</span></span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ property.description }}</p>
+                        <div class="mt-3 flex items-center space-x-3 text-sm text-gray-500">
+                            {% if property.distance_to_campus %}
+                            <span class="flex items-center">
+                                <svg class="h-4 w-4 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                {{ property.distance_to_campus }} km to campus
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="mt-3 flex flex-wrap gap-1">
+                            {% for amenity in property.amenities %}
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">{{ amenity }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-10 text-gray-500">
+                No properties found matching your search.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Map View -->
+    <div class="w-full md:w-1/2 lg:w-3/5 h-[50vh] md:h-full relative">
+        <div id="map" class="w-full h-full z-0"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initialize Map
+        const map = L.map('map').setView([0, 0], 2); // Default view, will be updated
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        const markers = [];
+        const bounds = L.latLngBounds();
+        
+        // Add markers for each property
+        const propertyCards = document.querySelectorAll('.property-card');
+        
+        propertyCards.forEach(card => {
+            const lat = parseFloat(card.dataset.lat);
+            const lng = parseFloat(card.dataset.lng);
+            
+            if (lat && lng) {
+                const title = card.querySelector('h3').innerText;
+                const price = card.querySelector('.text-indigo-600').innerText;
+                const url = card.querySelector('a').href;
+                
+                const popupContent = `
+                    <div class="font-sans">
+                        <h4 class="font-bold text-sm mb-1">${title}</h4>
+                        <div class="font-bold text-indigo-600 mb-2">${price}</div>
+                        <a href="${url}" class="text-xs bg-indigo-600 text-white px-2 py-1 rounded hover:bg-indigo-700 inline-block mt-1">View Details</a>
+                    </div>
+                `;
+
+                const marker = L.marker([lat, lng]).addTo(map).bindPopup(popupContent);
+                markers.push(marker);
+                bounds.extend([lat, lng]);
+
+                // Hover effect
+                card.addEventListener('mouseenter', () => {
+                    marker.openPopup();
+                });
+            }
+        });
+
+        // Fit map to show all markers
+        if (markers.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        } else {
+            // Default center if no properties (e.g. Center of US)
+            map.setView([39.8283, -98.5795], 4);
+        }
+    });
+</script>
+{% endblock %}

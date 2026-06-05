@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-6">Backup Tokens</h1>
+        
+        <div class="prose text-gray-600 mb-8">
+            <p>
+                Backup tokens can be used when your primary and backup methods aren't available. The backup tokens below can be used for login verification. If you've used up all your backup tokens, you can generate a new set of backup tokens. Only the backup tokens shown below will be valid.
+            </p>
+        </div>
+
+        {% if device.token_set.count %}
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <ul class="grid grid-cols-2 gap-4 font-mono text-lg text-center text-gray-800">
+                    {% for token in device.token_set.all %}
+                        <li class="bg-white py-2 px-4 rounded border border-gray-300 shadow-sm">{{ token.token }}</li>
+                    {% endfor %}
+                </ul>
+                <p class="text-sm text-gray-500 mt-6 text-center">Print these tokens and keep them somewhere safe.</p>
+            </div>
+        {% else %}
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8 text-yellow-700">
+                You don't have any backup codes yet.
+            </div>
+        {% endif %}
+
+        <form method="post" class="flex items-center justify-between pt-6 border-t border-gray-200">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <a href="{% url 'two_factor:profile' %}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                Back to Account Security
+            </a>
+            <button type="submit" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Generate Tokens
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

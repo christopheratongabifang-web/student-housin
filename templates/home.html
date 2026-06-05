@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex-grow relative bg-white overflow-hidden flex items-center justify-center min-h-[calc(100vh-4rem)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div class="text-center">
+            <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                <span class="block xl:inline">Find your perfect</span>
+                <span class="block text-indigo-600 xl:inline">student home</span>
+            </h1>
+            <p class="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+                Safe, affordable, and convenient accommodation near your campus. Browse thousands of verified listings with real student reviews.
+            </p>
+            <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
+                <form action="{% url 'property_search' %}" method="GET" class="w-full sm:flex gap-2">
+                    <input type="text" name="q" placeholder="Enter university, city, or zip code" class="w-full px-5 py-3 border border-gray-300 shadow-sm placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs rounded-md" required>
+                    <button type="submit" class="mt-3 w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-3 md:text-lg md:px-10 sm:mt-0 sm:w-auto shadow-lg transition-transform hover:scale-105">
+                        Search Now
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Decorative background blobs -->
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-full pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-96 h-96 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+    </div>
+</div>
+<style>
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: blob 7s infinite; }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+</style>
+{% endblock %}

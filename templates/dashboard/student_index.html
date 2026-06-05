@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-gray-50 flex-1 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="md:flex md:items-center md:justify-between mb-8">
+            <div class="flex-1 min-w-0">
+                <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                    Student Dashboard
+                </h2>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-4 rounded text-sm {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Stats -->
+        <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 mb-8">
+            <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6 border border-gray-100">
+                <dt class="text-sm font-medium text-gray-500 truncate">Total Inquiries Sent</dt>
+                <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ total_inquiries }}</dd>
+            </div>
+            <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6 border border-gray-100">
+                <dt class="text-sm font-medium text-gray-500 truncate">Account Status</dt>
+                <dd class="mt-1 text-3xl font-semibold text-green-600">Active</dd>
+            </div>
+        </dl>
+
+        <!-- Inquiries Table -->
+        <div class="bg-white shadow rounded-lg border border-gray-100 overflow-hidden">
+            <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Your Sent Inquiries</h3>
+            </div>
+            <ul class="divide-y divide-gray-200">
+                {% for inquiry in inquiries %}
+                <li class="px-4 py-4 sm:px-6 hover:bg-gray-50">
+                    <div class="flex justify-between">
+                        <div class="text-sm font-medium text-indigo-600 truncate">
+                            To: Admin (for <a href="{% url 'property_detail' inquiry.property.id %}" class="underline hover:text-indigo-800">{{ inquiry.property.title }}</a>)
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            {{ inquiry.created_at|date:"M d, Y H:i" }}
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-3 rounded border border-gray-100 flex justify-between items-center">
+                        <span class="truncate pr-4">
+                            {% if inquiry.messages.last %}
+                                {{ inquiry.messages.last.content|truncatechars:100 }}
+                            {% else %}
+                                <i>No messages yet</i>
+                            {% endif %}
+                        </span>
+                        <a href="{% url 'chat' inquiry.id %}" class="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex-shrink-0">
+                            Open Chat
+                        </a>
+                    </div>
+                </li>
+                {% empty %}
+                <li class="px-4 py-8 text-center text-gray-500">
+                    You have not sent any inquiries yet. Browse properties and contact the admin!
+                    <div class="mt-4">
+                        <a href="{% url 'property_search' %}" class="text-indigo-600 font-medium hover:text-indigo-800">Browse Properties &rarr;</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Recent Properties -->
+        <div class="mt-8">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Recently Added by Admin</h3>
+                <a href="{% url 'property_search' %}" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View all properties &rarr;</a>
+            </div>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {% for property in recent_properties %}
+                <div class="bg-white rounded-lg shadow border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 relative">
+                        <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <div class="absolute top-2 right-2 bg-white px-2 py-1 rounded text-xs font-bold text-gray-900">FRS {{ property.price_per_month }}/mo</div>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="text-lg font-bold text-gray-900 mb-1 truncate">{{ property.title }}</h4>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-2">{{ property.description }}</p>
+                        <a href="{% url 'property_detail' property.id %}" class="block w-full text-center bg-indigo-50 text-indigo-700 font-medium py-2 rounded hover:bg-indigo-100 transition-colors">View Details</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full text-center py-8 text-gray-500 bg-white rounded-lg shadow">No properties listed yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

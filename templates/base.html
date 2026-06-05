@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Housing Finder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-[1000]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <a href="{% url 'home' %}" class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold text-indigo-600">HousingFinder</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'property_search' %}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Search</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium transition-colors">Dashboard</a>
+                        <a href="{% url 'two_factor:profile' %}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Security</a>
+                        <div class="flex items-center">
+                            <span class="text-gray-500 text-sm mr-2">Hello, {{ user.username }}</span>
+                            {% if user.role == 'ADMIN' or user.is_superuser %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-indigo-100 text-indigo-800 border border-indigo-200">
+                                    Admin
+                                </span>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'logout' %}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Logout</a>
+                    {% else %}
+                        <a href="{% url 'two_factor:login' %}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                        <a href="{% url 'signup' %}" class="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-medium transition-colors">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto z-[1000]">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-500">&copy; 2026 Student Housing Finder. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

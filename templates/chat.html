@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex-grow flex flex-col bg-gray-50 h-[calc(100vh-64px)]">
+    <!-- Chat Header -->
+    <div class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+        <div class="flex items-center">
+            <a href="{% url 'dashboard' %}" class="mr-4 text-gray-400 hover:text-gray-600 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            </a>
+            
+            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-indigo-700 font-bold text-lg shadow-inner mr-3">
+                {% if request.user == inquiry.student %}
+                    A
+                {% else %}
+                    {{ inquiry.student.username|make_list|first|upper }}
+                {% endif %}
+            </div>
+            
+            <div>
+                <h2 class="text-lg font-bold text-gray-900 leading-tight">
+                        {% if request.user == inquiry.student %}
+                            Admin
+                        {% else %}
+                            {{ inquiry.student.username }}
+                        {% endif %}
+                </h2>
+                <div class="flex items-center">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-1.5"></span>
+                    <a href="{% url 'property_detail' inquiry.property.id %}" class="text-xs font-medium text-gray-500 hover:text-indigo-600 transition-colors truncate max-w-[200px] sm:max-w-xs">{{ inquiry.property.title }}</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Status Indicator -->
+        <div class="hidden sm:block text-right">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-800 border border-indigo-100">
+                Inquiry #{{ inquiry.id }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Chat Messages Area -->
+    <div id="chat-messages" class="flex-1 p-6 overflow-y-auto bg-[#F9FAFB] flex flex-col space-y-4">
+        {% for message in chat_messages %}
+            <div class="flex w-full {% if message.sender == request.user %}justify-end{% else %}justify-start{% endif %}">
+                <div class="flex flex-col {% if message.sender == request.user %}items-end{% else %}items-start{% endif %} max-w-[80%] md:max-w-[70%]">
+                    
+                    <div class="flex items-end {% if message.sender == request.user %}flex-row-reverse{% else %}flex-row{% endif %}">
+                        <!-- Message Bubble -->
+                        <div class="relative px-5 py-3 shadow-sm rounded-2xl {% if message.sender == request.user %}bg-indigo-600 text-white rounded-br-sm{% else %}bg-white text-gray-800 border border-gray-100 rounded-bl-sm{% endif %}">
+                            <p class="text-sm md:text-base leading-relaxed break-words whitespace-pre-wrap">{{ message.content }}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Timestamp -->
+                    <div class="mt-1 flex items-center space-x-1 text-[11px] text-gray-400 font-medium px-1">
+                        <span>{{ message.created_at|date:"M d, g:i A" }}</span>
+                        {% if message.sender == request.user %}
+                            <span>•</span>
+                            {% if message.is_read %}
+                                <span class="text-indigo-400">Read</span>
+                            {% else %}
+                                <span>Sent</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="flex-1 flex flex-col items-center justify-center text-center opacity-70 my-8">
+                <div class="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100 mb-4">
+                    <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                </div>
+                <h3 class="text-gray-900 font-medium mb-1">Start the conversation</h3>
+                <p class="text-sm text-gray-500 max-w-xs">Send a message to begin chatting about {{ inquiry.property.title }}.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Message Input -->
+    <div class="bg-white border-t border-gray-200 p-4 shrink-0">
+        <form action="{% url 'send_message' inquiry.id %}" method="POST" class="flex items-end space-x-3 max-w-4xl mx-auto">
+            {% csrf_token %}
+            <div class="flex-1 relative">
+                <textarea 
+                    id="content" 
+                    name="content" 
+                    rows="1" 
+                    required 
+                    placeholder="Type your message..." 
+                    class="block w-full rounded-2xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-3 px-4 resize-none min-h-[44px] max-h-32 overflow-y-auto"
+                    oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
+                ></textarea>
+            </div>
+            <button type="submit" class="inline-flex items-center justify-center h-11 w-11 shrink-0 rounded-full border border-transparent shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform active:scale-95">
+                <svg class="h-5 w-5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Auto-scroll to bottom of chat
+    const chatContainer = document.getElementById('chat-messages');
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    // Handle enter to submit
+    const textarea = document.getElementById('content');
+    textarea.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (this.value.trim() !== '') {
+                this.form.submit();
+            }
+        }
+    });
+</script>
+{% endblock %}
