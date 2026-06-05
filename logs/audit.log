@@ -113,3 +113,5 @@
 [2026-06-05 23:11:11] INFO accounts.logging_utils GET /account/login/ - Status: 200
 [2026-06-05 23:11:17] INFO accounts.logging_utils [christophe] POST /account/login/ - Status: 302
 [2026-06-05 23:11:19] INFO accounts.logging_utils [christophe] GET /dashboard/ - Status: 200
+[2026-06-05 23:13:28] WARNING accounts.logging_utils GET /favicon.ico - Status: 404
+[2026-06-05 23:13:42] WARNING accounts.logging_utils GET /.well-known/appspecific/com.chrome.devtools.json - Status: 404

@@ -12,3 +12,7 @@
 [2026-06-05 23:00:08] WARNING django.server "GET /admin/landlords/ HTTP/1.1" 404 7035
 [2026-06-05 23:00:41] WARNING django.request Not Found: /admin/landlords/
 [2026-06-05 23:00:41] WARNING django.server "GET /admin/landlords/ HTTP/1.1" 404 7035
+[2026-06-05 23:13:28] WARNING django.request Not Found: /favicon.ico
+[2026-06-05 23:13:28] WARNING django.server "GET /favicon.ico HTTP/1.1" 404 7961
+[2026-06-05 23:13:42] WARNING django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[2026-06-05 23:13:42] WARNING django.server "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8072

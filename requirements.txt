@@ -1,0 +1,17 @@
+# Core Django
+Django==5.0.6
+
+# Two-Factor Authentication
+django-two-factor-auth==1.16.0
+django-otp==1.4.0
+qrcode[pil]==7.4.2
+Pillow==10.4.0
+
+# Static files serving (whitenoise serves static files without a CDN)
+whitenoise==6.7.0
+
+# Security
+cryptography==42.0.8
+
+# Database (SQLite is built-in; add psycopg2-binary only if upgrading to PostgreSQL)
+# psycopg2-binary==2.9.9
