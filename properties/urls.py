@@ -12,4 +12,7 @@ urlpatterns = [
     path('dashboard/property/<int:pk>/delete/', views.property_delete_view, name='property_delete'),
     path('chat/<int:inquiry_id>/', views.chat_view, name='chat'),
     path('chat/<int:inquiry_id>/send/', views.send_message_view, name='send_message'),
+    path('dashboard/manage/landlords/', views.manage_landlords_view, name='manage_landlords'),
+    path('dashboard/manage/landlords/add/', views.add_landlord_view, name='add_landlord'),
+    path('dashboard/manage/landlords/<int:landlord_id>/delete/', views.delete_landlord_view, name='delete_landlord'),
 ]

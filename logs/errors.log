@@ -1,0 +1,14 @@
+[2026-06-05 22:35:53] WARNING django.request Not Found: /dashboard/property/15/edit/
+[2026-06-05 22:35:53] WARNING django.server "GET /dashboard/property/15/edit/ HTTP/1.1" 404 6452
+[2026-06-05 22:35:56] WARNING django.request Not Found: /dashboard/property/16/edit/
+[2026-06-05 22:35:56] WARNING django.server "GET /dashboard/property/16/edit/ HTTP/1.1" 404 6452
+[2026-06-05 22:36:00] WARNING django.request Not Found: /dashboard/property/16/delete/
+[2026-06-05 22:36:00] WARNING django.server "POST /dashboard/property/16/delete/ HTTP/1.1" 404 6759
+[2026-06-05 22:36:05] WARNING django.request Not Found: /dashboard/property/16/delete/
+[2026-06-05 22:36:05] WARNING django.server "POST /dashboard/property/16/delete/ HTTP/1.1" 404 6759
+[2026-06-05 22:52:40] WARNING django.request Not Found: /admin/landlords/
+[2026-06-05 22:52:40] WARNING django.server "GET /admin/landlords/ HTTP/1.1" 404 7035
+[2026-06-05 23:00:08] WARNING django.request Not Found: /admin/landlords/
+[2026-06-05 23:00:08] WARNING django.server "GET /admin/landlords/ HTTP/1.1" 404 7035
+[2026-06-05 23:00:41] WARNING django.request Not Found: /admin/landlords/
+[2026-06-05 23:00:41] WARNING django.server "GET /admin/landlords/ HTTP/1.1" 404 7035

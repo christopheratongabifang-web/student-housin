@@ -22,7 +22,7 @@
                     <div class="flex-1">
                         <div class="flex justify-between items-start">
                             <h3 class="text-lg font-bold text-gray-900"><a href="{% url 'property_detail' property.id %}" class="hover:text-indigo-600">{{ property.title }}</a></h3>
-                            <span class="text-lg font-bold text-indigo-600">FRS {{ property.price_per_month }}<span class="text-xs text-gray-500 font-normal">/mo</span></span>
+                            <span class="text-lg font-bold text-indigo-600">{{ property.price_per_month }}frs<span class="text-xs text-gray-500 font-normal">/mo</span></span>
                         </div>
                         <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ property.description }}</p>
                         <div class="mt-3 flex items-center space-x-3 text-sm text-gray-500">

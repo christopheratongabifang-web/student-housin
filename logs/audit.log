@@ -1,0 +1,115 @@
+[2026-06-05 22:34:39] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 22:34:43] INFO accounts.logging_utils [admin] POST /account/login/ - Status: 302
+[2026-06-05 22:34:47] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:35:17] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 22:35:20] INFO accounts.logging_utils [christopher] POST /account/login/ - Status: 302
+[2026-06-05 22:35:22] INFO accounts.logging_utils [christopher] GET /dashboard/ - Status: 200
+[2026-06-05 22:35:39] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 22:35:43] INFO accounts.logging_utils [admin] POST /account/login/ - Status: 302
+[2026-06-05 22:35:46] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:35:53] WARNING accounts.logging_utils [admin] GET /dashboard/property/15/edit/ - Status: 404
+[2026-06-05 22:35:56] WARNING accounts.logging_utils [admin] GET /dashboard/property/16/edit/ - Status: 404
+[2026-06-05 22:36:00] WARNING accounts.logging_utils [admin] POST /dashboard/property/16/delete/ - Status: 404
+[2026-06-05 22:36:05] WARNING accounts.logging_utils [admin] POST /dashboard/property/16/delete/ - Status: 404
+[2026-06-05 22:45:39] INFO accounts.logging_utils [awah] Property Deleted - Property 'TEMP DELETE TEST' deleted
+[2026-06-05 22:48:18] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 22:48:21] INFO accounts.logging_utils [admin] POST /account/login/ - Status: 302
+[2026-06-05 22:48:25] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:48:31] INFO accounts.logging_utils [admin] Property Deleted - Property 'ROOM' deleted
+[2026-06-05 22:48:31] INFO accounts.logging_utils [admin] POST /dashboard/property/16/delete/ - Status: 302
+[2026-06-05 22:48:31] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:48:36] INFO accounts.logging_utils [admin] Property Deleted - Property 'Modern 2-Bed Apartment 15' deleted
+[2026-06-05 22:48:37] INFO accounts.logging_utils [admin] POST /dashboard/property/15/delete/ - Status: 302
+[2026-06-05 22:48:37] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:48:45] INFO accounts.logging_utils [admin] Property Deleted - Property 'Budget Student Room 14' deleted
+[2026-06-05 22:48:45] INFO accounts.logging_utils [admin] POST /dashboard/property/14/delete/ - Status: 302
+[2026-06-05 22:48:45] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:48:51] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 22:48:59] INFO accounts.logging_utils [christopher] POST /account/login/ - Status: 302
+[2026-06-05 22:49:02] INFO accounts.logging_utils [christopher] GET /dashboard/ - Status: 200
+[2026-06-05 22:49:14] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 22:49:19] INFO accounts.logging_utils [christopher] POST /account/login/ - Status: 302
+[2026-06-05 22:49:21] INFO accounts.logging_utils [christopher] GET /dashboard/ - Status: 200
+[2026-06-05 22:49:28] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 22:49:32] INFO accounts.logging_utils [admin] POST /account/login/ - Status: 302
+[2026-06-05 22:49:36] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:49:40] INFO accounts.logging_utils [admin] Property Deleted - Property 'Budget Student Room 13' deleted
+[2026-06-05 22:49:40] INFO accounts.logging_utils [admin] POST /dashboard/property/13/delete/ - Status: 302
+[2026-06-05 22:49:41] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:49:48] INFO accounts.logging_utils [admin] Property Deleted - Property 'Modern 2-Bed Apartment 12' deleted
+[2026-06-05 22:49:48] INFO accounts.logging_utils [admin] POST /dashboard/property/12/delete/ - Status: 302
+[2026-06-05 22:49:48] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:49:52] INFO accounts.logging_utils [admin] Property Deleted - Property 'Luxury Studio 11' deleted
+[2026-06-05 22:49:52] INFO accounts.logging_utils [admin] POST /dashboard/property/11/delete/ - Status: 302
+[2026-06-05 22:49:53] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:49:58] INFO accounts.logging_utils [admin] Property Deleted - Property 'Cozy Studio Near Campus 10' deleted
+[2026-06-05 22:49:58] INFO accounts.logging_utils [admin] POST /dashboard/property/10/delete/ - Status: 302
+[2026-06-05 22:49:59] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:04] INFO accounts.logging_utils [admin] Property Deleted - Property 'Cozy Studio Near Campus 9' deleted
+[2026-06-05 22:50:04] INFO accounts.logging_utils [admin] POST /dashboard/property/9/delete/ - Status: 302
+[2026-06-05 22:50:04] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:08] INFO accounts.logging_utils [admin] Property Deleted - Property 'Budget Student Room 8' deleted
+[2026-06-05 22:50:08] INFO accounts.logging_utils [admin] POST /dashboard/property/8/delete/ - Status: 302
+[2026-06-05 22:50:08] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:13] INFO accounts.logging_utils [admin] Property Deleted - Property 'Luxury Studio 7' deleted
+[2026-06-05 22:50:13] INFO accounts.logging_utils [admin] POST /dashboard/property/7/delete/ - Status: 302
+[2026-06-05 22:50:14] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:18] INFO accounts.logging_utils [admin] Property Deleted - Property 'Ensuite Room in Shared Flat 6' deleted
+[2026-06-05 22:50:18] INFO accounts.logging_utils [admin] POST /dashboard/property/6/delete/ - Status: 302
+[2026-06-05 22:50:18] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:22] INFO accounts.logging_utils [admin] Property Deleted - Property 'Modern 2-Bed Apartment 5' deleted
+[2026-06-05 22:50:22] INFO accounts.logging_utils [admin] POST /dashboard/property/5/delete/ - Status: 302
+[2026-06-05 22:50:22] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:26] INFO accounts.logging_utils [admin] Property Deleted - Property 'Cozy Studio Near Campus 4' deleted
+[2026-06-05 22:50:26] INFO accounts.logging_utils [admin] POST /dashboard/property/4/delete/ - Status: 302
+[2026-06-05 22:50:26] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:30] INFO accounts.logging_utils [admin] Property Deleted - Property 'Cozy Studio Near Campus 3' deleted
+[2026-06-05 22:50:30] INFO accounts.logging_utils [admin] POST /dashboard/property/3/delete/ - Status: 302
+[2026-06-05 22:50:31] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:46] INFO accounts.logging_utils [admin] Property Deleted - Property 'Ensuite Room in Shared Flat 2' deleted
+[2026-06-05 22:50:46] INFO accounts.logging_utils [admin] POST /dashboard/property/2/delete/ - Status: 302
+[2026-06-05 22:50:46] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:50] INFO accounts.logging_utils [admin] Property Deleted - Property 'Budget Student Room 1' deleted
+[2026-06-05 22:50:50] INFO accounts.logging_utils [admin] POST /dashboard/property/1/delete/ - Status: 302
+[2026-06-05 22:50:50] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:50:59] INFO accounts.logging_utils [admin] GET /dashboard/property/add/ - Status: 200
+[2026-06-05 22:51:29] INFO accounts.logging_utils [admin] Property Created - Property 'new house' created - Price: 24999.99frs
+[2026-06-05 22:51:29] INFO accounts.logging_utils [admin] POST /dashboard/property/add/ - Status: 302
+[2026-06-05 22:51:29] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:51:33] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 22:51:39] INFO accounts.logging_utils [christopher] POST /account/login/ - Status: 302
+[2026-06-05 22:51:41] INFO accounts.logging_utils [christopher] GET /dashboard/ - Status: 200
+[2026-06-05 22:52:14] INFO accounts.logging_utils [christopher] GET /dashboard/ - Status: 200
+[2026-06-05 22:52:18] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 22:52:24] INFO accounts.logging_utils [admin] POST /account/login/ - Status: 302
+[2026-06-05 22:52:29] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 22:52:40] WARNING accounts.logging_utils [admin] GET /admin/landlords/ - Status: 404
+[2026-06-05 23:00:05] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 23:00:08] WARNING accounts.logging_utils [admin] GET /admin/landlords/ - Status: 404
+[2026-06-05 23:00:30] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 23:00:41] WARNING accounts.logging_utils [admin] GET /admin/landlords/ - Status: 404
+[2026-06-05 23:01:58] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 23:02:03] INFO accounts.logging_utils [admin] GET /dashboard/manage/landlords/ - Status: 200
+[2026-06-05 23:07:13] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 23:07:23] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 23:08:29] INFO accounts.logging_utils GET /accounts/signup/ - Status: 200
+[2026-06-05 23:08:40] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 23:08:47] INFO accounts.logging_utils GET /accounts/signup/ - Status: 200
+[2026-06-05 23:09:15] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 23:09:41] INFO accounts.logging_utils GET /accounts/signup/ - Status: 200
+[2026-06-05 23:09:44] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 23:09:47] INFO accounts.logging_utils [admin] POST /account/login/ - Status: 302
+[2026-06-05 23:09:51] INFO accounts.logging_utils [admin] GET /dashboard/ - Status: 200
+[2026-06-05 23:09:56] INFO accounts.logging_utils [admin] GET /dashboard/manage/landlords/ - Status: 200
+[2026-06-05 23:10:01] INFO accounts.logging_utils [admin] GET /dashboard/manage/landlords/2/delete/ - Status: 200
+[2026-06-05 23:10:02] WARNING accounts.logging_utils [admin] Landlord Deleted - Landlord 'landlord1' and their 0 properties deleted
+[2026-06-05 23:10:02] INFO accounts.logging_utils [admin] POST /dashboard/manage/landlords/2/delete/ - Status: 302
+[2026-06-05 23:10:02] INFO accounts.logging_utils [admin] GET /dashboard/manage/landlords/ - Status: 200
+[2026-06-05 23:10:05] INFO accounts.logging_utils [admin] GET /dashboard/manage/landlords/add/ - Status: 200
+[2026-06-05 23:10:35] INFO accounts.logging_utils [admin] POST /dashboard/manage/landlords/add/ - Status: 200
+[2026-06-05 23:11:00] INFO accounts.logging_utils [admin] Landlord Created - Landlord 'christophe' created by admin
+[2026-06-05 23:11:00] INFO accounts.logging_utils [admin] POST /dashboard/manage/landlords/add/ - Status: 302
+[2026-06-05 23:11:00] INFO accounts.logging_utils [admin] GET /dashboard/manage/landlords/ - Status: 200
+[2026-06-05 23:11:11] INFO accounts.logging_utils GET /account/login/ - Status: 200
+[2026-06-05 23:11:17] INFO accounts.logging_utils [christophe] POST /account/login/ - Status: 302
+[2026-06-05 23:11:19] INFO accounts.logging_utils [christophe] GET /dashboard/ - Status: 200

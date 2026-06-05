@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-gray-50 flex-1 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="md:flex md:items-center md:justify-between mb-8">
+            <div class="flex-1 min-w-0">
+                <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                    Manage Landlords
+                </h2>
+                <p class="mt-1 text-sm text-gray-500">
+                    View, add, and remove landlords from the system. Removing a landlord will also delete their properties.
+                </p>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <a href="{% url 'add_landlord' %}"
+                   class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-md shadow transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Add Landlord
+                </a>
+            </div>
+        </div>
+
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-4 rounded text-sm {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Landlords Table -->
+        <div class="bg-white shadow rounded-lg border border-gray-100 overflow-hidden">
+            <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">All Landlords</h3>
+            </div>
+            
+            {% if landlords %}
+            <div class="divide-y divide-gray-200">
+                {% for landlord in landlords %}
+                <div class="px-4 py-4 sm:px-6 hover:bg-gray-50 flex justify-between items-center">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900">{{ landlord.username }}</h4>
+                        <p class="text-sm text-gray-500">{{ landlord.email }}</p>
+                        <p class="text-xs text-gray-400 mt-1">Joined: {{ landlord.date_joined|date:"M d, Y" }}</p>
+                    </div>
+                    <a href="{% url 'delete_landlord' landlord.id %}" class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        Delete
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="px-4 py-8 text-center text-gray-500 bg-gray-50">
+                <p>No landlords in the system.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-6">
+            <a href="{% url 'dashboard' %}" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                &larr; Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

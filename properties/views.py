@@ -1,12 +1,26 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 from django.contrib import messages
 from .models import Property, Inquiry, Message
 from .forms import PropertyForm
+from accounts.forms import AddLandlordForm
+
+User = get_user_model()
 
 def home_view(request):
-    return render(request, 'home.html')
+    featured_properties = Property.objects.filter(
+        landlord__role='ADMIN'
+    ).order_by('-created_at')[:6]
+
+    total_listings = Property.objects.filter(landlord__role='ADMIN').count()
+
+    context = {
+        'featured_properties': featured_properties,
+        'total_listings': total_listings,
+    }
+    return render(request, 'home.html', context)
 
 def property_search_view(request):
     query = request.GET.get('q', '')
@@ -84,6 +98,18 @@ def property_create_view(request):
             property = form.save(commit=False)
             property.landlord = request.user
             property.save()
+            
+            # Log property creation
+            from accounts.logging_utils import log_event
+            log_event(
+                level='INFO',
+                category='PROPERTY',
+                action='Property Created',
+                message=f"Property '{property.title}' created - Price: {property.price_per_month}frs",
+                user=request.user,
+                request=request
+            )
+            
             messages.success(request, "Property listed successfully!")
             return redirect('dashboard')
     else:
@@ -96,7 +122,11 @@ def property_edit_view(request, pk):
     if request.user.role not in ['ADMIN', 'LANDLORD']:
         return redirect('home')
         
-    property = get_object_or_404(Property, pk=pk, landlord=request.user)
+    if request.user.role == 'ADMIN':
+        property = get_object_or_404(Property, pk=pk)
+    else:
+        property = get_object_or_404(Property, pk=pk, landlord=request.user)
+
     if request.method == 'POST':
         form = PropertyForm(request.POST, instance=property)
         if form.is_valid():
@@ -110,9 +140,29 @@ def property_edit_view(request, pk):
 
 @login_required
 def property_delete_view(request, pk):
-    property = get_object_or_404(Property, pk=pk, landlord=request.user)
+    if request.user.role == 'ADMIN':
+        property = get_object_or_404(Property, pk=pk)
+    elif request.user.role == 'LANDLORD':
+        property = get_object_or_404(Property, pk=pk, landlord=request.user)
+    else:
+        messages.error(request, "You do not have permission to delete properties.")
+        return redirect('dashboard')
+
     if request.method == 'POST':
+        prop_title = property.title
         property.delete()
+        
+        # Log property deletion
+        from accounts.logging_utils import log_event
+        log_event(
+            level='INFO',
+            category='PROPERTY',
+            action='Property Deleted',
+            message=f"Property '{prop_title}' deleted",
+            user=request.user,
+            request=request
+        )
+        
         messages.success(request, "Property deleted successfully!")
     return redirect('dashboard')
 
@@ -184,3 +234,81 @@ def send_message_view(request, inquiry_id):
                 content=content
             )
     return redirect('chat', inquiry_id=inquiry_id)
+
+@login_required
+def add_landlord_view(request):
+    if request.user.role != 'ADMIN':
+        messages.error(request, "Only admins can add landlords.")
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = AddLandlordForm(request.POST)
+        if form.is_valid():
+            landlord = form.save()
+
+            from accounts.logging_utils import log_event
+            log_event(
+                level='INFO',
+                category='LANDLORD',
+                action='Landlord Created',
+                message=f"Landlord '{landlord.username}' created by admin",
+                user=request.user,
+                request=request
+            )
+
+            messages.success(request, f"Landlord '{landlord.username}' has been added successfully.")
+            return redirect('manage_landlords')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = AddLandlordForm()
+
+    context = {'form': form}
+    return render(request, 'admin/add_landlord.html', context)
+
+
+@login_required
+def manage_landlords_view(request):
+    if request.user.role != 'ADMIN':
+        messages.error(request, "Only admins can manage landlords.")
+        return redirect('dashboard')
+
+    landlords = User.objects.filter(role='LANDLORD').order_by('-date_joined')
+    context = {'landlords': landlords}
+    return render(request, 'admin/manage_landlords.html', context)
+
+@login_required
+def delete_landlord_view(request, landlord_id):
+    if request.user.role != 'ADMIN':
+        messages.error(request, "Only admins can delete landlords.")
+        return redirect('dashboard')
+    
+    landlord = get_object_or_404(User, pk=landlord_id, role='LANDLORD')
+    
+    if request.method == 'POST':
+        # Delete properties and related inquiries/messages
+        properties = Property.objects.filter(landlord=landlord)
+        for prop in properties:
+            Inquiry.objects.filter(property=prop).delete()
+        properties.delete()
+        
+        # Delete the landlord
+        username = landlord.username
+        landlord.delete()
+        
+        # Log landlord deletion
+        from accounts.logging_utils import log_event
+        log_event(
+            level='WARNING',
+            category='LANDLORD',
+            action='Landlord Deleted',
+            message=f"Landlord '{username}' and their {properties.count()} properties deleted",
+            user=request.user,
+            request=request
+        )
+        
+        messages.success(request, f"Landlord '{username}' and their properties have been deleted.")
+        return redirect('manage_landlords')
+    
+    context = {'landlord': landlord}
+    return render(request, 'admin/confirm_delete_landlord.html', context)

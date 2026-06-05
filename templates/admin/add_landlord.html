@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-gray-50 flex-1 py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl">Add New Landlord</h2>
+            <p class="mt-1 text-sm text-gray-500">Create a landlord account. They will be able to list properties on the platform.</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-4 rounded text-sm {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Form Card -->
+        <div class="bg-white shadow rounded-lg border border-gray-100">
+            <div class="px-6 py-5 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Landlord Details</h3>
+            </div>
+            <div class="px-6 py-6">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                    <div class="mb-5">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ field.label }}
+                            {% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
+                        </label>
+                        <input
+                            type="{{ field.field.widget.input_type }}"
+                            name="{{ field.html_name }}"
+                            id="{{ field.id_for_label }}"
+                            value="{{ field.value|default:'' }}"
+                            placeholder="{{ field.field.widget.attrs.placeholder|default:'' }}"
+                            autocomplete="{{ field.field.widget.attrs.autocomplete|default:'off' }}"
+                            class="block w-full px-3 py-2 border {% if field.errors %}border-red-400{% else %}border-gray-300{% endif %} rounded-md shadow-sm text-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        >
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {% if field.help_text %}
+                            <p class="mt-1 text-xs text-gray-400">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
+                        <a href="{% url 'manage_landlords' %}" class="text-sm text-gray-500 hover:text-gray-700 font-medium">
+                            &larr; Cancel
+                        </a>
+                        <button type="submit"
+                            class="inline-flex items-center px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-md shadow transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Add Landlord
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Back link -->
+        <div class="mt-6">
+            <a href="{% url 'dashboard' %}" class="text-indigo-600 hover:text-indigo-800 font-medium text-sm">
+                &larr; Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
